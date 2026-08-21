@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gerador de Senhas</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #ff8c00;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #333;
+        }
+
+        .conteudo {
+            width: 90%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 50px 20px;
+        }
+
+        .conteudo-titulo {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .conteudo-titulo img {
+            width: 70px;
+            margin-bottom: 15px;
+        }
+
+        .titulo-principal {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .titulo-secundario {
+            font-size: 18px;
+            font-weight: normal;
+        }
+
+        .conteudo-senha {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .conteudo-senha label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        #campo-senha {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ff8c00;
+            border-radius: 8px;
+            font-size: 20px;
+            color: #333;
+        }
+
+        .parametro {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .parametro-titulo {
+            font-size: 25px;
+            margin-bottom: 25px;
+        }
+
+        .parametro-coluna__senha {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .parametro-senha__titulo {
+            margin-bottom: 15px;
+        }
+
+        .parametro-senha-botoes {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .parametro-senha__botao {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 50%;
+            background: #ff8c00;
+            color: white;
+            font-size: 25px;
+            cursor: pointer;
+        }
+
+        .parametro-senha__botao:hover {
+            background: #e67e00;
+        }
+
+        .parametro-senha__texto {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .parametro-senha-checkbox {
+            margin-bottom: 12px;
+        }
+
+        .checkbox {
+            margin-right: 8px;
+            cursor: pointer;
+        }
+
+        .barra {
+            width: 100%;
+            height: 15px;
+            background: #ddd;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .forca {
+            height: 15px;
+            width: 33%;
+            background: red;
+            border-radius: 10px;
+            margin-top: -30px;
+            position: relative;
+            transition: 0.3s;
+        }
+
+        .parametro-senha-textos {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        .entropia {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 700px) {
+            .parametro-coluna__senha {
+                grid-template-columns: 1fr;
+            }
+
+            .titulo-principal {
+                font-size: 28px;
+            }
+
+            .titulo-secundario {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <section class="conteudo">
+
+        <div class="conteudo-titulo">
+
+            <img
+                src="https://raw.githubusercontent.com/giullianacestari/js-gerador-de-senhas/39b3bbfe8fc186e2381011569f2d06879cd7c198/unlock.svg"
+                alt="Cadeado">
+
+            <h2 class="titulo-principal">
+                Gerador de senhas
+            </h2>
+
+            <h3 class="titulo-secundario">
+                Gere instantaneamente uma senha aleatória e segura
+            </h3>
+
+        </div>
+
+
+        <div class="conteudo-senha">
+
+            <label for="campo-senha">
+                Senha
+            </label>
+
+            <input
+                type="text"
+                id="campo-senha"
+                readonly>
+
+        </div>
+
+
+        <div class="parametro">
+
+            <h3 class="parametro-titulo">
+                Personalize sua senha
+            </h3>
+
+
+            <div class="parametro-coluna__senha">
+
+                <div class="parametro-senha">
+
+                    <h4 class="parametro-senha__titulo">
+                        Número de caracteres
+                    </h4>
+
+                    <div class="parametro-senha-botoes">
+
+                        <button
+                            type="button"
+                            class="parametro-senha__botao"
+                            id="diminuir">
+                            -
+                        </button>
+
+                        <p
+                            class="parametro-senha__texto"
+                            id="quantidade">
+                            12
+                        </p>
+
+                        <button
+                            type="button"
+                            class="parametro-senha__botao"
+                            id="aumentar">
+                            +
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="parametro-senha">
+
+                    <h4 class="parametro-senha__titulo">
+                        Características da senha
+                    </h4>
+
+                    <div class="parametro-senha-checkbox">
+
+                        <input
+                            id="maiusculo"
+                            type="checkbox"
+                            class="checkbox"
+                            checked>
+
+                        <label for="maiusculo">
+                            Letras maiúsculas
+                        </label>
+
+                    </div>
+
+
+                    <div class="parametro-senha-checkbox">
+
+                        <input
+                            id="minusculo"
+                            type="checkbox"
+                            class="checkbox">
+
+                        <label for="minusculo">
+                            Letras minúsculas
+                        </label>
+
+                    </div>
+
+
+                    <div class="parametro-senha-checkbox">
+
+                        <input
+                            id="numero"
+                            type="checkbox"
+                            class="checkbox">
+
+                        <label for="numero">
+                            Números
+                        </label>
+
+                    </div>
+
+
+                    <div class="parametro-senha-checkbox">
+
+                        <input
+                            id="simbolo"
+                            type="checkbox"
+                            class="checkbox">
+
+                        <label for="simbolo">
+                            Símbolos
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <div class="parametro-senha">
+
+                    <h4 class="parametro-senha__titulo">
+                        Força da senha
+                    </h4>
+
+                    <div class="barra"></div>
+
+                    <div
+                        class="forca"
+                        id="forca">
+                    </div>
+
+                    <div class="parametro-senha-textos">
+                        <p>Fraca</p>
+                        <p>Média</p>
+                        <p>Forte</p>
+                    </div>
+
+                    <p
+                        class="entropia"
+                        id="entropia">
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <script>
+
+        let quantidade = 12;
+
+        const campoSenha = document.getElementById("campo-senha");
+        const quantidadeTexto = document.getElementById("quantidade");
+
+        const botaoDiminuir = document.getElementById("diminuir");
+        const botaoAumentar = document.getElementById("aumentar");
+
+        const maiusculo = document.getElementById("maiusculo");
+        const minusculo = document.getElementById("minusculo");
+        const numero = document.getElementById("numero");
+        const simbolo = document.getElementById("simbolo");
+
+        const forca = document.getElementById("forca");
+        const entropia = document.getElementById("entropia");
+
+
+        function gerarSenha() {
+
+            let caracteres = "";
+
+            if (maiusculo.checked) {
+                caracteres += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            }
+
+            if (minusculo.checked) {
+                caracteres += "abcdefghijklmnopqrstuvwxyz";
+            }
+
+            if (numero.checked) {
+                caracteres += "0123456789";
+            }
+
+            if (simbolo.checked) {
+                caracteres += "!@#$%&*?";
+            }
+
+
+            if (caracteres.length === 0) {
+                campoSenha.value = "Selecione uma opção";
+                return;
+            }
+
+
+            let senha = "";
+
+            for (let i = 0; i < quantidade; i++) {
+
+                const indice =
+                    Math.floor(Math.random() * caracteres.length);
+
+                senha += caracteres[indice];
+            }
+
+
+            campoSenha.value = senha;
+
+            calcularForca();
+        }
+
+
+        function calcularForca() {
+
+            let pontos = 0;
+
+            if (quantidade >= 8) {
+                pontos++;
+            }
+
+            if (quantidade >= 12) {
+                pontos++;
+            }
+
+            if (maiusculo.checked) {
+                pontos++;
+            }
+
+            if (minusculo.checked) {
+                pontos++;
+            }
+
+            if (numero.checked) {
+                pontos++;
+            }
+
+            if (simbolo.checked) {
+                pontos++;
+            }
+
+
+            if (pontos <= 2) {
+
+                forca.style.width = "33%";
+                forca.style.background = "red";
+
+                entropia.textContent = "Força: Fraca";
+
+            } else if (pontos <= 4) {
+
+                forca.style.width = "66%";
+                forca.style.background = "orange";
+
+                entropia.textContent = "Força: Média";
+
+            } else {
+
+                forca.style.width = "100%";
+                forca.style.background = "green";
+
+                entropia.textContent = "Força: Forte";
+            }
+        }
+
+
+        botaoAumentar.addEventListener("click", function () {
+
+            if (quantidade < 30) {
+                quantidade++;
+                quantidadeTexto.textContent = quantidade;
+                gerarSenha();
+            }
+
+        });
+
+
+        botaoDiminuir.addEventListener("click", function () {
+
+            if (quantidade > 4) {
+                quantidade--;
+                quantidadeTexto.textContent = quantidade;
+                gerarSenha();
+            }
+
+        });
+
+
+        maiusculo.addEventListener("change", gerarSenha);
+        minusculo.addEventListener("change", gerarSenha);
+        numero.addEventListener("change", gerarSenha);
+        simbolo.addEventListener("change", gerarSenha);
+
+
+        gerarSenha();
+
+    </script>
+
+</body>
+
+</html>
